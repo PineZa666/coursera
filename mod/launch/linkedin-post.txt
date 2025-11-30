@@ -1,8 +1,0 @@
-We just launched Balancr — a mobile‑first time balance tracker.
-Quick presets make logging effortless; the dashboard shows balance at a glance.
-
-Try the prototype: https://pineza666.github.io/coursera/
-Read the design process: https://example.com
-Watch the 1‑minute demo: https://example.com
-
-Shared in HCI Online Alumni Group (#ixdonline). Feedback welcome!
