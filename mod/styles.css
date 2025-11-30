@@ -1,0 +1,32 @@
+:root {
+  --bg: #0f172a;
+  --surface: #111827;
+  --text: #e5e7eb;
+  --muted: #94a3b8;
+  --primary: #22c55e;
+  --accent: #38bdf8;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color: var(--text); background: var(--bg); }
+.app-header { padding: 12px; background: var(--surface); display: flex; flex-direction: column; gap: 8px; }
+.app-header h1 { margin: 0; font-size: 18px; }
+.nav { display: grid; grid-auto-flow: column; gap: 8px; overflow-x: auto; }
+.nav a { color: var(--muted); text-decoration: none; padding: 6px 10px; border-radius: 8px; background: #0b1220; white-space: nowrap; }
+.nav a.active { color: var(--text); background: #1f2937; }
+.content { padding: 16px; max-width: 640px; margin: 0 auto; }
+.card { background: var(--surface); border-radius: 12px; padding: 16px; box-shadow: 0 1px 0 #0b1220; }
+.form { display: grid; gap: 12px; }
+label { display: grid; gap: 6px; font-size: 14px; }
+input, select, button { font: inherit; }
+input, select { padding: 10px; border-radius: 10px; border: 1px solid #374151; background: #0b1220; color: var(--text); }
+.btn { display: inline-block; padding: 10px 14px; background: var(--primary); color: #061218; border-radius: 10px; text-decoration: none; border: none; cursor: pointer; }
+.btn.secondary { background: var(--accent); }
+.btn.primary-lg { font-weight: 600; font-size: 16px; padding: 14px 18px; }
+.pill { border-radius: 999px; }
+.btn-group { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+.status { margin-top: 8px; color: var(--muted); }
+.list { list-style: none; padding: 0; margin: 0; }
+.list li { padding: 10px; border-bottom: 1px solid #1f2937; display: flex; justify-content: space-between; align-items: center; }
+.legend { display: grid; grid-template-columns: auto 1fr auto; gap: 8px 12px; align-items: center; margin-top: 12px; }
+.swatch { width: 14px; height: 14px; border-radius: 3px; }
+#chart { display: grid; place-items: center; height: 260px; }

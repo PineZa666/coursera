@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Online A/B Test Plan</title>
+  <link rel="stylesheet" href="../plans/print.css" />
+</head>
+<body>
+  <div class="page">
+    <h1>Online A/B Test Plan — Add Activity Flow</h1>
+    <h2>Component & Manipulation</h2>
+    <ul>
+      <li>Original (A): Standard form with title, category, minutes, and a submit button.</li>
+      <li>Redesign (B): Adds 25/50/75 minute presets, reorders fields, and enlarges the submit CTA.</li>
+    </ul>
+    <h2>Assignment</h2>
+    <ul>
+      <li>Users visit distinct URLs: <code>add-activity-a.html</code> vs <code>add-activity-b.html</code>.</li>
+    </ul>
+    <h2>Primary Metric (Binary)</h2>
+    <ul>
+      <li>Conversion: submitted an activity (yes/no).</li>
+    </ul>
+    <h2>Secondary Metrics</h2>
+    <ul>
+      <li>Time to submit (milliseconds).</li>
+      <li>Preset used (yes/no, minutes value).</li>
+    </ul>
+    <h2>Instrumentation</h2>
+    <ul>
+      <li>Local logging via <code>logABEvent</code> in <code>app.js</code> records <code>view</code>, <code>preset</code>, and <code>submit</code> with timestamps.</li>
+    </ul>
+    <h2>Analysis</h2>
+    <ul>
+      <li>Compute counts of submitted vs not submitted for A and B.</li>
+      <li>Apply Chi‑squared test to compare conversion rates.</li>
+      <li>Interpretations:
+        - If B > A significantly: presets and CTA improve engagement.
+        - If no difference: redesign may be neutral; reconsider microcopy or placement.
+        - If A > B: presets caused confusion; simplify or educate.</li>
+    </ul>
+    <h2>Risks & Mitigations</h2>
+    <ul>
+      <li>Small sample sizes: supplement with in‑person tests and longer collection.</li>
+      <li>Repeat visitors: deduplicate by session heuristics.</li>
+    </ul>
+  </div>
+</body>
+</html>

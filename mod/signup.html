@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>Sign Up • Balancr</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="signup">
+  <header class="app-header">
+    <h1>Sign Up</h1>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="signup.html" class="active">Sign Up</a>
+      <a href="add-activity.html">Add Activity</a>
+      <a href="activities.html">Activities</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="info.html">Info</a>
+    </nav>
+  </header>
+  <main class="content">
+    <form id="signup-form" class="card form">
+      <h2>Create Account</h2>
+      <label>
+        Name
+        <input type="text" id="signup-name" placeholder="Your name" required>
+      </label>
+      <label>
+        Email
+        <input type="email" id="signup-email" placeholder="you@example.com" required>
+      </label>
+      <button type="submit" class="btn">Create</button>
+      <div id="signup-status" class="status"></div>
+    </form>
+  </main>
+  <script src="analytics-config.js"></script>
+  <script src="analytics.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

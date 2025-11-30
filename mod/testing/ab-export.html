@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A/B Events Export</title>
+  <link rel="stylesheet" href="../plans/print.css" />
+</head>
+<body>
+  <div class="page">
+    <h1>A/B Events Export</h1>
+    <div id="summary"></div>
+    <button id="download">Download CSV</button>
+  </div>
+  <script>
+    const KEY = "balancr_ab_events";
+    function get() {
+      try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch { return []; }
+    }
+    function summarize(rows) {
+      const counts = { A: { view:0, submit:0 }, B: { view:0, submit:0 } };
+      for (const r of rows) {
+        if (r.variant && r.type) {
+          if (!counts[r.variant]) counts[r.variant] = { view:0, submit:0 };
+          counts[r.variant][r.type] = (counts[r.variant][r.type] || 0) + 1;
+        }
+      }
+      return counts;
+    }
+    function erf(x){
+      const a1=0.254829592,a2=-0.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,p=0.3275911;
+      const sign = x<0?-1:1; x=Math.abs(x);
+      const t=1/(1+p*x);
+      const y=1-((((a5*t+a4)*t+a3)*t+a2)*t+a1)*t*Math.exp(-x*x);
+      return sign*y;
+    }
+    function chisqPval(df, x){
+      if (df===1) return 1 - erf(Math.sqrt(x/2));
+      return NaN;
+    }
+    function render() {
+      const rows = get();
+      const c = summarize(rows);
+      const A_views = c.A.view||0, B_views = c.B.view||0;
+      const A_sub = c.A.submit||0, B_sub = c.B.submit||0;
+      const A_non = Math.max(0, A_views - A_sub);
+      const B_non = Math.max(0, B_views - B_sub);
+      const grand = A_views + B_views;
+      const conv = A_sub + B_sub;
+      const non = A_non + B_non;
+      const EA_sub = (conv * A_views) / grand || 0;
+      const EB_sub = (conv * B_views) / grand || 0;
+      const EA_non = (non * A_views) / grand || 0;
+      const EB_non = (non * B_views) / grand || 0;
+      const stat = (A_sub-EA_sub)**2/(EA_sub||1) + (B_sub-EB_sub)**2/(EB_sub||1) + (A_non-EA_non)**2/(EA_non||1) + (B_non-EB_non)**2/(EB_non||1);
+      const p = chisqPval(1, stat);
+      const el = document.getElementById("summary");
+      el.innerHTML = `
+        <h2>Counts</h2>
+        <table border="1" cellpadding="6" cellspacing="0">
+          <tr><th></th><th>A</th><th>B</th><th>Total</th></tr>
+          <tr><td>Submits</td><td>${A_sub}</td><td>${B_sub}</td><td>${conv}</td></tr>
+          <tr><td>Non‑submits</td><td>${A_non}</td><td>${B_non}</td><td>${non}</td></tr>
+          <tr><td>Total views</td><td>${A_views}</td><td>${B_views}</td><td>${grand}</td></tr>
+        </table>
+        <h2>Expected Values</h2>
+        <table border="1" cellpadding="6" cellspacing="0">
+          <tr><th></th><th>A</th><th>B</th></tr>
+          <tr><td>Submits</td><td>${EA_sub.toFixed(2)}</td><td>${EB_sub.toFixed(2)}</td></tr>
+          <tr><td>Non‑submits</td><td>${EA_non.toFixed(2)}</td><td>${EB_non.toFixed(2)}</td></tr>
+        </table>
+        <h2>Chi‑squared</h2>
+        <p>Statistic: ${stat.toFixed(4)} • df=1 • p‑value: ${isNaN(p)?"n/a":p.toFixed(6)}</p>
+      `;
+      document.getElementById("download").onclick = () => {
+        const header = Object.keys(rows[0] || { variant:"", type:"", time_ms:"", ts:"" });
+        const csv = [header.join(",")].concat(rows.map(r => header.map(h => r[h] ?? "").join(","))).join("\n");
+        const blob = new Blob([csv], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url; a.download = "ab-events.csv"; a.click(); URL.revokeObjectURL(url);
+      };
+    }
+    render();
+  </script>
+</body>
+</html>

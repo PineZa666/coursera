@@ -1,0 +1,2 @@
+From the previous iteration, we streamlined the add flow by introducing 25/50/75 minute presets, reordering fields to match user expectations, and enlarging the primary CTA. User testing indicated hesitation around manual entry; presets reduced friction. The dashboard legend and spacing were refined for clarity. A/B instrumentation now measures conversions and time‑to‑submit so we can quantify improvements and iterate based on data.
+
